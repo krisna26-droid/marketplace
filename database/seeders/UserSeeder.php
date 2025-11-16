@@ -3,41 +3,38 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
+
 use App\Models\User;
+use App\Models\Vendor;
+use App\Models\Customer;
 
 class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Admin
-        // User::updateOrCreate(
-        //     ['email' => 'admin@example.com'],
-        //     [
-        //         'name' => 'Admin Utama',
-        //         'password' => Hash::make('password'),
-        //         'role' => 'admin',
-        //     ]
-        // );
+        // 10 vendor
+        $vendors = User::factory()->count(10)->create(['role' => 'vendor']);
+        Vendor::insert(
+            $vendors->map(fn($v) => [
+                'user_id' => $v->id,
+                'created_at' => now(),
+                'updated_at' => now()
+            ])->toArray()
+        );
 
-        // // Vendor
-        // User::updateOrCreate(
-        //     ['email' => 'vendor@example.com'],
-        //     [
-        //         'name' => 'Vendor Pertama',
-        //         'password' => Hash::make('password'),
-        //         'role' => 'vendor',
-        //     ]
-        // );
-
-        // // Customer contoh
-        // User::updateOrCreate(
-        //     ['email' => 'customer@example.com'],
-        //     [
-        //         'name' => 'Customer Contoh',
-        //         'password' => Hash::make('password'),
-        //         'role' => 'customer',
-        //     ]
-        // );
+        // 100 customer
+        $customers = User::factory()->count(100)->create(['role' => 'customer']);
+        Customer::insert(
+            $customers->map(fn($c) => [
+                'user_id' => $c->id,
+                'address' => fake()->address(),
+                'phone' => fake()->phoneNumber(),
+                'city' => fake()->city(),
+                'province' => fake()->state(),
+                'postal_code' => fake()->postcode(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ])->toArray()
+        );
     }
 }

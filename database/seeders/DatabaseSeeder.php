@@ -20,10 +20,12 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            UserSeeder::class,
-            AdminSeeder::class,
-            VendorSeeder::class,
-            CustomerSeeder::class
+            CategorySeeder::class,
+            AdminSeeder::class,      // 1 admin
+            UserSeeder::class,       // 10 vendor + 100 customer
+            ProductSeeder::class,
+            OrderSeeder::class,
+            ReviewSeeder::class,
         ]);
     }
 }
