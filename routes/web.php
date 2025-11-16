@@ -71,6 +71,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/dashboard', [VendorController::class, 'index'])->name('dashboard');
             Route::resource('/products', VendorProductController::class)->names('products');
             Route::resource('/orders', VendorOrderController::class)->names('orders');
+
+            Route::get('/reviews/{product}', [VendorReviewController::class, 'index'])->name('vendor.reviews.index');
+
+
         });
 
     // CUSTOMER ROUTES
@@ -104,6 +108,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::post('/reviews/{orderItem}', [ReviewController::class, 'store'])
                 ->name('reviews.store');
+
+            Route::get('/products/{product}/reviews', [ReviewController::class, 'index'])
+                ->name('reviews.index');
 
             });
 

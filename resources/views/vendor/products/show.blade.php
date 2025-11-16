@@ -33,7 +33,39 @@
                     <p class="text-sm text-gray-500 mb-6">
                         Kategori: {{ $product->category->name ?? '-' }}
                     </p>
+                    <p class="text-sm text-gray-500 mb-6">
+                        Stok: {{ $product->stock }}
+                    </p>
 
+                    <p class="text-yellow-500 text-md">
+                        Review: {{ str_repeat('⭐', round($product->averageRating())) }}
+                        <span class="text-gray-600">({{ number_format($product->averageRating(), 1) }}/5)</span>
+                    </p>
+                    <p class="text-yellow-500 text-md">
+                        Review: {{ str_repeat('⭐', round($product->averageRating())) }}
+                        <span class="text-gray-600">({{ number_format($product->averageRating(), 1) }}/5)</span>
+                    </p>
+
+                    {{-- 🔥 Tombol: Lihat Semua Review --}}
+                    <a href="{{ route('vendor.reviews.index', $product->id) }}"
+                    class="inline-block mt-2 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 text-sm">
+                        Lihat Semua Review →
+                    </a>
+
+                    <br><br>
+
+                    <div class="flex gap-3">
+                        <a href="{{ route('vendor.products.edit', $product->id) }}" 
+                        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Edit</a>
+
+                        <form method="POST" action="{{ route('vendor.products.destroy', $product->id) }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                                    onclick="return confirm('Yakin ingin menghapus produk ini?')">Hapus</button>
+                        </form>
+                    </div>
+                    
                     <div class="flex gap-3">
                         <a href="{{ route('vendor.products.edit', $product->id) }}" 
                            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Edit</a>

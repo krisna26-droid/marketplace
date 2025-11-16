@@ -188,4 +188,21 @@ class CartController extends Controller
 
         return redirect()->route('customer.orders.index')->with('success', 'Pesanan berhasil dibuat.');
     }
+
+    public function showCheckout()
+    {
+        $cart = Session::get('cart', []);
+
+        if (empty($cart)) {
+            return redirect()->route('customer.cart.index')
+                ->with('error', 'Keranjang masih kosong.');
+        }
+
+        $total = collect($cart)->sum(function ($item) {
+            return $item['price'] * $item['quantity'];
+        });
+
+        return view('customer.cart.checkout', compact('cart', 'total'));
+    }
+
 }

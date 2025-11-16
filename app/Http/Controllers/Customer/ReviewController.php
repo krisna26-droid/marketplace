@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\Review;
 use App\Models\OrderItem;
+use App\Models\Product;
+use App\Models\Order;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
@@ -49,4 +52,15 @@ class ReviewController extends Controller
 
         return back()->with('success', 'Review berhasil dikirim!');
     }
+
+    public function index(Product $product)
+    {
+        $reviews = $product->reviews()
+            ->latest()
+            ->paginate(10);
+
+        return view('customer.reviews.index', compact('product', 'reviews'));
+    }
+
+    
 }

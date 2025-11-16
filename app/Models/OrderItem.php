@@ -25,4 +25,10 @@ class OrderItem extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    // ⭐ Tambahan penting
+    public function review()
+    {
+        return $this->hasOne(Review::class, 'order_item_id');
+    }
 }

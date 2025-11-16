@@ -18,18 +18,8 @@ class Product extends Model
         'price',
         'stock',
         'image',
-
     ];
 
-    public function getImageAttribute()
-    {
-        if ($this->image) {
-            return asset('storage/' . $this->image);
-        }
-
-        return asset('images/default.jpg');
-    }
-    
     public function vendor()
     {
         return $this->belongsTo(User::class, 'vendor_id');
@@ -48,5 +38,11 @@ class Product extends Model
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    // ⭐ Tambahan penting: average rating
+    public function averageRating()
+    {
+        return $this->reviews()->avg('rating') ?? 0;
     }
 }

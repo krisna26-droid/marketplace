@@ -25,9 +25,7 @@ class UserController extends Controller
             $query->where('role', $role);
         }
 
-        // Pisahkan paginasi agar tidak warning
-        $users = $query->paginate(10);
-        $users->withQueryString(); // mempertahankan parameter role saat pindah halaman
+        $users = $query->paginate(10)->appends(request()->query());
 
         return view('admin.users.index', compact('users', 'role'));
     }

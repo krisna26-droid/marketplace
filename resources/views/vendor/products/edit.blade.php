@@ -8,7 +8,6 @@
     </div>
 @endif
 
-
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -21,30 +20,46 @@
             @csrf
             @method('PUT')
 
+            {{-- Nama --}}
             <div class="mb-4">
                 <label class="block text-gray-700">Nama Produk</label>
-                <input type="text" name="name" class="w-full border rounded p-2" value="{{ $product->name }}" required>
+                <input type="text" name="name" class="w-full border rounded p-2"
+                       value="{{ $product->name }}" required>
             </div>
 
+            {{-- Deskripsi --}}
             <div class="mb-4">
                 <label class="block text-gray-700">Deskripsi</label>
                 <textarea name="description" class="w-full border rounded p-2" required>{{ $product->description }}</textarea>
             </div>
 
+            {{-- Harga --}}
             <div class="mb-4">
                 <label class="block text-gray-700">Harga</label>
-                <input type="number" name="price" class="w-full border rounded p-2" value="{{ $product->price }}" required>
+                <input type="number" name="price" class="w-full border rounded p-2"
+                       value="{{ $product->price }}" required>
             </div>
 
+            {{-- Stok (DITAMBAHKAN) --}}
+            <div class="mb-4">
+                <label class="block text-gray-700">Stok</label>
+                <input type="number" name="stock" class="w-full border rounded p-2"
+                       value="{{ $product->stock }}" min="0" required>
+            </div>
+
+            {{-- Kategori --}}
             <div class="mb-4">
                 <label class="block text-gray-700">Kategori</label>
                 <select name="category_id" class="w-full border rounded p-2" required>
                     @foreach ($categories as $cat)
-                        <option value="{{ $cat->id }}" {{ $cat->id == $product->category_id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                        <option value="{{ $cat->id }}" {{ $cat->id == $product->category_id ? 'selected' : '' }}>
+                            {{ $cat->name }}
+                        </option>
                     @endforeach
                 </select>
             </div>
 
+            {{-- Gambar --}}
             <div class="mb-4">
                 <label class="block text-gray-700">Gambar</label>
                 @if ($product->image)
@@ -53,9 +68,14 @@
                 <input type="file" name="image" class="w-full border rounded p-2">
             </div>
 
+            {{-- Submit --}}
             <div class="flex justify-end">
-                <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">Update</button>
+                <button type="submit"
+                        class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">
+                    Update
+                </button>
             </div>
+
         </form>
     </div>
 </x-app-layout>
