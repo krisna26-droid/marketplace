@@ -10,13 +10,10 @@ return new class extends Migration
     {
         Schema::table('reviews', function (Blueprint $table) {
 
-            // tambahkan kolom
+            // tambahkan kolom order_item_id
             $table->unsignedBigInteger('order_item_id');
 
-            // hapus unique lama
-            $table->dropUnique(['order_id', 'product_id']);
-
-            // unique baru: per item pesanan
+            // unique baru untuk per item pesanan
             $table->unique(['order_item_id']);
 
             // foreign key
@@ -30,7 +27,10 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('reviews', function (Blueprint $table) {
+
+            // drop foreign + unique + kolom
             $table->dropForeign(['order_item_id']);
+            $table->dropUnique(['order_item_id']);
             $table->dropColumn('order_item_id');
         });
     }

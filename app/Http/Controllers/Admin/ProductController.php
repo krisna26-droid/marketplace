@@ -16,7 +16,7 @@ class ProductController extends Controller
         $filter = $request->get('status');
         $query = Product::with(['vendor', 'category']);
 
-        // Filter produk berdasarkan status (aktif / terhapus / semua)
+        // Filter status
         if ($filter === 'trashed') {
             $query->onlyTrashed();
         } elseif ($filter === 'all') {
@@ -25,27 +25,27 @@ class ProductController extends Controller
             $query->withoutTrashed();
         }
 
-        // Filter pencarian nama produk
+        // Filter nama
         if ($request->has('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
-        // Filter berdasarkan kategori
+        // Filter kategori
         if ($request->filled('category_id')) {
             $query->where('category_id', $request->category_id);
         }
 
-        // Filter berdasarkan harga
+        // Filter harga
         if ($request->filled('min_price') && $request->filled('max_price')) {
             $query->whereBetween('price', [$request->min_price, $request->max_price]);
         }
 
-        // Filter berdasarkan vendor
+        // Filter vendor
         if ($request->filled('vendor_id')) {
             $query->where('vendor_id', $request->vendor_id);
         }
 
-        $products = $query->latest()->paginate(10);
+        $products = $query->latest()->paginate(10)->withQueryString();
         $categories = Category::all();
         $vendors = User::where('role', 'vendor')->get();
 
@@ -62,7 +62,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:products,name',
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
@@ -71,13 +71,14 @@ class ProductController extends Controller
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $data = $request->all();
-
-        // Cegah stok minus
+        $data = $request->except('image');
         $data['stock'] = max(0, (int)$request->stock);
 
+        // Gambar
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('products', 'public');
+        } else {
+            $data['image'] = null;
         }
 
         Product::create($data);
@@ -89,14 +90,15 @@ class ProductController extends Controller
     {
         $categories = Category::all();
         $vendors = User::where('role', 'vendor')->get();
+
         return view('admin.products.edit', compact('product', 'categories', 'vendors'));
     }
 
     public function update(Request $request, Product $product)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required',
+            'name' => 'required|string|max:255|unique:products,name,' . $product->id,
+            'description' => 'required|string',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'category_id' => 'required|exists:categories,id',
@@ -104,15 +106,8 @@ class ProductController extends Controller
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $data = $request->except('stock');
-
-        // Cegah stok negatif secara paksa
-        $newStock = (int)$request->stock;
-        if ($newStock < 0) {
-            return back()->with('error', 'Stok tidak boleh kurang dari 0.');
-        }
-
-        $data['stock'] = $newStock;
+        $data = $request->except('image', 'stock');
+        $data['stock'] = max(0, (int)$request->stock);
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('products', 'public');

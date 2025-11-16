@@ -21,6 +21,15 @@ class Product extends Model
 
     ];
 
+    public function getImageAttribute()
+    {
+        if ($this->image) {
+            return asset('storage/' . $this->image);
+        }
+
+        return asset('images/default.jpg');
+    }
+    
     public function vendor()
     {
         return $this->belongsTo(User::class, 'vendor_id');

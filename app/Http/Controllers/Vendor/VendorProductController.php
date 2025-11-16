@@ -36,7 +36,7 @@ class VendorProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:products,name',
             'description' => 'required',
             'price' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
@@ -67,7 +67,7 @@ class VendorProductController extends Controller
         $this->authorize('update', $product);
 
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255' . $product->id,
             'description' => 'required',
             'price' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',

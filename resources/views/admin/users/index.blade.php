@@ -4,9 +4,11 @@
     </x-slot>
 
     <div class="py-10 px-8">
+
         {{-- Filter --}}
         <div class="flex justify-between items-center mb-6">
             <h3 class="text-lg font-semibold">Daftar Pengguna</h3>
+
             <form method="GET" class="flex items-center space-x-2">
                 <select name="role" class="border-gray-300 rounded-lg px-3 py-2 focus:ring-indigo-300 focus:border-indigo-400">
                     <option value="">Semua Role</option>
@@ -14,14 +16,19 @@
                     <option value="customer" {{ request('role') == 'customer' ? 'selected' : '' }}>Customer</option>
                     <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
                 </select>
-                <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition">
+
+                <button type="submit" 
+                        class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition">
                     Filter
                 </button>
-                <button type="submit" class="px-8 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition">
-                    <a href="{{ route('admin.users.create') }}" class="text-white">Tambah User</a>
-                </button>
+
+                <a href="{{ route('admin.users.create') }}" 
+                   class="px-8 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition">
+                    Tambah User
+                </a>
             </form>
         </div>
+
         {{-- Tabel --}}
         <div class="overflow-x-auto bg-white shadow rounded-lg">
             <table class="w-full text-sm text-left text-gray-600">
@@ -34,11 +41,14 @@
                         <th class="px-6 py-3 w-1/6 text-center">Aksi</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     @forelse ($users as $user)
                         <tr class="border-t hover:bg-gray-50 transition">
                             <td class="px-6 py-3 font-medium text-gray-800">{{ $user->name }}</td>
+
                             <td class="px-6 py-3">{{ $user->email }}</td>
+
                             <td class="px-6 py-3 text-center">
                                 <span class="px-2 py-1 rounded text-xs font-semibold 
                                     {{ $user->role === 'admin' ? 'bg-purple-100 text-purple-700' : 
@@ -47,20 +57,42 @@
                                     {{ ucfirst($user->role) }}
                                 </span>
                             </td>
+
                             <td class="px-6 py-3 text-center">
                                 {{ $user->created_at->format('d M Y') }}
                             </td>
+
                             <td class="px-6 py-3 text-center">
-                                <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Hapus user ini?')" class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-800 font-semibold">Hapus</button>
-                                </form>
+                                <div class="flex justify-center items-center space-x-4">
+
+                                    {{-- Tombol Edit --}}
+                                    <a href="{{ route('admin.users.edit', $user->id) }}"
+                                       class="text-indigo-600 hover:text-indigo-800 font-semibold">
+                                        Edit
+                                    </a>
+
+                                    {{-- Tombol Delete (tidak bisa hapus diri sendiri) --}}
+                                    @if(auth()->id() !== $user->id)
+                                        <form action="{{ route('admin.users.destroy', $user->id) }}" 
+                                              method="POST"
+                                              onsubmit="return confirm('Hapus user ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" 
+                                                    class="text-red-600 hover:text-red-800 font-semibold">
+                                                Hapus
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
+
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center py-6 text-gray-500">Tidak ada pengguna ditemukan.</td>
+                            <td colspan="5" class="text-center py-6 text-gray-500">
+                                Tidak ada pengguna ditemukan.
+                            </td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -69,7 +101,8 @@
 
         {{-- Pagination --}}
         <div class="mt-6">
-            {{ $users->links() }}
+            {{ $users->withQueryString()->links() }}
         </div>
+
     </div>
 </x-app-layout>
