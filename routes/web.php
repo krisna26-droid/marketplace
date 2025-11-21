@@ -11,12 +11,15 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\VendorController as AdminVendorController;
 
 // VENDOR
 use App\Http\Controllers\Vendor\VendorController;
 use App\Http\Controllers\Vendor\VendorProductController;
 use App\Http\Controllers\Vendor\VendorOrderController;
 use App\Http\Controllers\Vendor\VendorReviewController;
+use App\Http\Controllers\Vendor\RegisterController;
 
 // CUSTOMER
 use App\Http\Controllers\Customer\CustomerController;
@@ -37,6 +40,13 @@ use App\Http\Controllers\Customer\FavoriteController;
 */
 
 Route::redirect('/', '/login');
+
+Route::get('/vendor/register', [RegisterController::class, 'showRegistrationForm'])
+                ->name('vendor.register');
+
+            // Proses submit form vendor
+Route::post('/vendor/register', [RegisterController::class, 'register'])
+                ->name('vendor.register.submit');
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
@@ -63,6 +73,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::resource('/orders', AdminOrderController::class)->only(['index', 'show', 'update'])->names('orders');
             Route::get('/reports', [AdminReportController::class, 'index'])->name('reports.index');
 
+            Route::get('/admin/vendors', [AdminVendorController::class, 'index'])->name('admin.vendors');
+            Route::post('/admin/vendors/{id}/approve', [AdminVendorController::class, 'approve'])->name('admin.vendors.approve');
+            Route::post('/admin/vendors/{id}/reject', [AdminVendorController::class, 'reject'])->name('admin.vendors.reject');
+
         });
 
     // VENDOR ROUTES
@@ -76,7 +90,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('/reviews/{product}', [VendorReviewController::class, 'index'])->name('reviews.index');
 
-
+            
         });
 
     // CUSTOMER ROUTES

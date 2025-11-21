@@ -42,11 +42,13 @@
             </a>
 
             <!-- Button Register as Vendor -->
-            <a href="{{ route('login') }}"
-                class="px-4 py-2 bg-gray-200 text-gray-700 text-sm rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <a href="{{ route('vendor.register') }}"
+                class="inline-block px-4 py-2 bg-indigo-600 text-white text-sm rounded-md 
+                    hover:bg-indigo-700 focus:outline-none focus:ring-2 
+                    focus:ring-offset-2 focus:ring-indigo-500 transition">
                 Register as Vendor
             </a>
-
+            
             <!-- Button Register User Utama -->
             <x-primary-button>
                 {{ __('Register') }}

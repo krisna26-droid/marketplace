@@ -10,19 +10,25 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RedirectIfAuthenticated
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
     public function handle(Request $request, Closure $next, string ...$guards): Response
     {
-        $guards = empty($guards) ? [null] : $guards;
+        // Pastikan user sudah login
+        if (Auth::check()) {
 
-        foreach ($guards as $guard) {
-            if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+            // Kalau masih pending → logout & beri pesan
+            if (Auth::user()->role === 'vendor_pending') {
+                Auth::logout();
+                return redirect()->route('login')
+                    ->with('error', 'Akun vendor Anda sedang menunggu verifikasi admin.');
             }
+
+            // Arahkan sesuai role yang valid
+            return match (Auth::user()->role) {
+                'admin'        => redirect()->route('admin.dashboard'),
+                'vendor'       => redirect()->route('vendor.dashboard'),
+                'customer'     => redirect()->route('customer.dashboard'),
+                default        => redirect(RouteServiceProvider::HOME),
+            };
         }
 
         return $next($request);

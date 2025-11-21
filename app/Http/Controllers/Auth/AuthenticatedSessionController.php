@@ -18,6 +18,7 @@ class AuthenticatedSessionController extends Controller
     public function create(): View
     {
         return view('auth.login');
+
     }
 
     /**
@@ -28,6 +29,16 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+
+        $user = Auth::user();
+        // dd($user);
+
+        // Jika user adalah vendor dan belum disetujui
+         if ($user->is_vendor && $user->vendor_status != 'approved') {
+            Auth::logout();
+            return redirect()->route('login')
+                ->withErrors(['email' => 'Akun vendor belum disetujui admin.']);
+        }
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }
