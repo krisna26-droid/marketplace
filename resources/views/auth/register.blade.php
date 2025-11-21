@@ -33,20 +33,26 @@
         {{-- Role diset otomatis ke customer, tidak bisa diubah --}}
         <input type="hidden" name="role" value="customer">
 
-        <div class="flex items-center justify-end mt-4">
-            <div class="text-sm text-gray-600  margin-right: 4px">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
-                </a>
-            </div>
-            <div class="text-sm text-gray-600">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                    {{ __('Register As Vendor') }}
-                </a>
-            </div>
-            <x-primary-button class="ms-4">
+        <div class="flex items-center justify-end mt-6 space-x-4">
+
+            <!-- Link Already Registered -->
+            <a href="{{ route('login') }}"
+                class="text-sm text-gray-600 hover:text-gray-900 underline">
+                Already registered?
+            </a>
+
+            <!-- Button Register as Vendor -->
+            <a href="{{ route('login') }}"
+                class="px-4 py-2 bg-gray-200 text-gray-700 text-sm rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Register as Vendor
+            </a>
+
+            <!-- Button Register User Utama -->
+            <x-primary-button>
                 {{ __('Register') }}
             </x-primary-button>
+
         </div>
+
     </form>
 </x-guest-layout>
