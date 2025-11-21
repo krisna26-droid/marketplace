@@ -45,4 +45,25 @@ class Product extends Model
     {
         return $this->reviews()->avg('rating') ?? 0;
     }
+    public function getImageUrlAttribute()
+    {
+        if (!$this->image) {
+            return asset('images/no-image.png'); // fallback jika tidak ada
+        }
+
+        // Jika sudah URL lengkap (http/https)
+        if (filter_var($this->image, FILTER_VALIDATE_URL)) {
+            return $this->image;
+        }
+
+        // Jika tersimpan di storage lokal
+        return asset('storage/' . $this->image);
+    }
+
+    public function favoritedBy()
+    {
+        return $this->belongsToMany(User::class, 'favorites');
+    }
+
+
 }

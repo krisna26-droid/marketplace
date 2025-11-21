@@ -13,14 +13,14 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             @forelse ($products as $product)
                 <a href="{{ route('vendor.products.show', $product->id) }}" 
-                class="bg-white rounded-lg shadow hover:shadow-lg transition p-4 block hover:scale-[1.02] duration-150">
-                
+                class="bg-white rounded-lg shadow hover:shadow-lg transition p-4 block hover:scale-[1.02] duration-150">   
                     @if ($product->image)
-                        <img src="{{ asset('storage/' . $product->image) }}" 
-                            class="w-full h-48 object-cover rounded mb-3" 
+                        <img src="{{ $product->image_url }}"
+                            class="w-full h-48 object-cover rounded mb-3"
                             alt="{{ $product->name }}">
+                    @else
+                        <span class="text-gray-400 text-sm">Tidak ada gambar</span>
                     @endif
-                    
                     <h4 class="text-lg font-semibold text-gray-800">{{ $product->name }}</h4>
                     <p class="text-gray-600 text-sm mt-1">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                     <p class="text-xs text-gray-500 mt-1">{{ $product->category->name ?? '-' }}</p>

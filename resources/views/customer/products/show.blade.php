@@ -8,7 +8,7 @@
     <div class="max-w-5xl mx-auto py-10 px-8">
         <div class="bg-white rounded-lg shadow p-6 flex flex-col md:flex-row gap-6">
 
-            <img src="{{ asset('storage/' . $product->image) }}"
+            <img src="{{ image_url($product->image) }}"
                  class="w-full md:w-1/3 h-64 object-cover rounded">
 
             <div>

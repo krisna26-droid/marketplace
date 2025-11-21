@@ -6,7 +6,7 @@
     <ul class="space-y-2 text-sm">
         <li><a href="{{ route('customer.dashboard') }}" class="block px-3 py-2 rounded hover:bg-gray-100">Dashboard</a></li>
         <li><a href="{{ route('customer.cart.index') }}" class="block px-3 py-2 rounded hover:bg-gray-100">Cart</a></li>
-        <li><a href="#" class="block px-3 py-2 rounded hover:bg-gray-100">Wishlist</a></li>
+        <li><a href="{{ route('customer.wishlist.index') }}" class="block px-3 py-2 rounded hover:bg-gray-100">Wishlist</a></li>
         <li><a href="{{ route('customer.orders.index') }}" class="block px-3 py-2 rounded hover:bg-gray-100">Orders</a></li>
         <li><a href="{{ route('profile.edit') }}" class="block px-3 py-2 rounded hover:bg-gray-100">Profile</a></li>
     </ul>

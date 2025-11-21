@@ -25,6 +25,7 @@ use App\Http\Controllers\Customer\CustomerOrderController;
 use App\Http\Controllers\Customer\CartController;
 use App\Http\Controllers\Customer\CheckoutController;
 use App\Http\Controllers\Customer\ReviewController;
+use App\Http\Controllers\Customer\FavoriteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,7 +74,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::resource('/products', VendorProductController::class)->names('products');
             Route::resource('/orders', VendorOrderController::class)->names('orders');
 
-            Route::get('/reviews/{product}', [VendorReviewController::class, 'index'])->name('vendor.reviews.index');
+            Route::get('/reviews/{product}', [VendorReviewController::class, 'index'])->name('reviews.index');
 
 
         });
@@ -113,8 +114,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/products/{product}/reviews', [ReviewController::class, 'index'])
                 ->name('reviews.index');
 
+            Route::get('/wishlist', [FavoriteController::class, 'index'])
+                ->name('wishlist.index');
+            Route::post('/wishlist/toggle/{product}', [FavoriteController::class, 'toggle'])
+                ->name('wishlist.toggle');
             });
-
+     
     // PROFILE
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

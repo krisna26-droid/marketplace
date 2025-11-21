@@ -23,9 +23,9 @@
                         <tr class="border-b">
                             <td class="p-3 flex items-center gap-3">
                                 @if ($item['image'])
-                                    <img src="{{ asset('storage/' . $item['image']) }}" class="w-16 h-16 object-cover rounded">
-                                @endif
-                                {{ $item['name'] }}
+                                <img src="{{ image_url($item['image']) }}" 
+                                    class="w-16 h-16 object-cover rounded">
+                            @endif
                             </td>
                             <td class="p-3">Rp {{ number_format($item['price'], 0, ',', '.') }}</td>
                             <td class="p-3">
