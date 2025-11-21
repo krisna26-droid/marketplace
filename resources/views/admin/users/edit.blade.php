@@ -23,14 +23,25 @@
                     class="w-full mt-1 border-gray-300 rounded-lg">
             </div>
 
-            <div class="mb-4">
+            <!-- <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700">Role</label>
                 <select name="role" class="w-full mt-1 border-gray-300 rounded-lg">
                     <option value="admin" {{ $user->role === 'admin' ? 'selected' : '' }}>Admin</option>
                     <option value="vendor" {{ $user->role === 'vendor' ? 'selected' : '' }}>Vendor</option>
                     <option value="customer" {{ $user->role === 'customer' ? 'selected' : '' }}>Customer</option>
                 </select>
-            </div>
+            </div> -->
+
+            @if ($user->role === 'vendor')
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Status</label>
+                    <select name="vendor_status" class="w-full mt-1 border-gray-300 rounded-lg">
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
+            @endif
 
             {{-- FORM CUSTOMER --}}
             @if($user->role === 'customer')

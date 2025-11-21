@@ -19,6 +19,7 @@ class VendorSeeder extends Seeder
             'email' => 'vendor@example.com',
             'password' => Hash::make('password'),
             'role' => 'vendor',
+            'is_vendor' => true
         ]);
         $user->vendor()->create();
     }

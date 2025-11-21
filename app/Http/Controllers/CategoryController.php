@@ -7,9 +7,6 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    /**
-     * Menampilkan daftar kategori (utama dan subkategori)
-     */
     public function index()
     {
         $categories = Category::with('parent')
@@ -19,19 +16,11 @@ class CategoryController extends Controller
 
         return view('admin.categories.index', compact('categories'));
     }
-
-    /**
-     * Form tambah kategori
-     */
     public function create()
     {
         $parents = Category::whereNull('parent_id')->get(); // hanya kategori utama
         return view('admin.categories.create', compact('parents'));
     }
-
-    /**
-     * Simpan kategori baru
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -44,10 +33,6 @@ class CategoryController extends Controller
         return redirect()->route('admin.categories.index')
             ->with('success', 'Kategori berhasil ditambahkan.');
     }
-
-    /**
-     * Form edit kategori
-     */
     public function edit(Category $category)
     {
         $parents = Category::whereNull('parent_id')
@@ -56,10 +41,6 @@ class CategoryController extends Controller
 
         return view('admin.categories.edit', compact('category', 'parents'));
     }
-
-    /**
-     * Update kategori
-     */
     public function update(Request $request, Category $category)
     {
         $request->validate([
@@ -72,10 +53,6 @@ class CategoryController extends Controller
         return redirect()->route('admin.categories.index')
             ->with('success', 'Kategori berhasil diperbarui.');
     }
-
-    /**
-     * Hapus kategori
-     */
     public function destroy(Category $category)
     {
         $category->delete();

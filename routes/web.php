@@ -69,7 +69,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::resource('/products', AdminProductController::class)->names('products');
             Route::patch('/products/{id}/restore', [AdminProductController::class, 'restore'])->name('products.restore');
             Route::delete('/products/{id}/force-delete', [AdminProductController::class, 'forceDelete'])->name('products.forceDelete');
-            Route::resource('/users', AdminUserController::class)->names('users');
+            Route::resource('/users', AdminUserController::class)->names('users')->except('show');
             Route::resource('/orders', AdminOrderController::class)->only(['index', 'show', 'update'])->names('orders');
             Route::get('/reports', [AdminReportController::class, 'index'])->name('reports.index');
 
@@ -77,10 +77,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/admin/vendors/{id}/approve', [AdminVendorController::class, 'approve'])->name('admin.vendors.approve');
             Route::post('/admin/vendors/{id}/reject', [AdminVendorController::class, 'reject'])->name('admin.vendors.reject');
 
+            Route::get('/users/vendors', [AdminUserController::class, 'vendors'])->name('users.vendors');
         });
 
     // VENDOR ROUTES
-    Route::middleware(['auth', 'role:vendor'])
+    Route::middleware(['auth', 'role:vendor', 'approved_vendor'])
         ->prefix('vendor')
         ->as('vendor.')
         ->group(function () {

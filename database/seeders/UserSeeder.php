@@ -13,7 +13,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // 10 vendor
-        $vendors = User::factory()->count(10)->create(['role' => 'vendor']);
+        $vendors = User::factory()->count(10)->create(['role' => 'vendor', 'is_vendor' => true, 'vendor_status' => 'approved']);
         Vendor::insert(
             $vendors->map(fn($v) => [
                 'user_id' => $v->id,

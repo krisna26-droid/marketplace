@@ -5,7 +5,8 @@
 
     <ul class="space-y-2 text-sm">
         <li><a href="{{ route('admin.dashboard') }}" class="block px-3 py-2 rounded hover:bg-gray-100">Dashboard</a></li>
-        <li><a href="{{ route('admin.users.index') }}" class="block px-3 py-2 rounded hover:bg-gray-100">Manage Users</a></li>
+        <li><a href="{{ route('admin.users.index') }}" class="block px-3 py-2 rounded hover:bg-gray-100">Manage Customers</a></li>
+        <li><a href="{{ route('admin.users.vendors') }}" class="block px-3 py-2 rounded hover:bg-gray-100">Manage Vendor</a></li>
         <li><a href="{{ route('admin.categories.index') }}" class="block px-3 py-2 rounded hover:bg-gray-100">Manage Categories</a></li>
         <li><a href="{{ route('admin.products.index') }}" class="block px-3 py-2 rounded hover:bg-gray-100">Manage Products</a></li>
         <li><a href="{{ route('admin.orders.index') }}" class="block px-3 py-2 rounded hover:bg-gray-100">Orders</a></li>
